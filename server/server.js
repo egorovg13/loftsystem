@@ -1,50 +1,59 @@
-// const mongoose = require('mongoose');
-// const Schema = mongoose.Schema;
-// mongoose.Promise = global.Promise;
-
-// const profileSchema = new Schema ({ 
-//   username: String, 
-//   surName: String,
-//   firstName: String, 
-//   middleName: String, 
-//   password: String
-// })
-
-// mongoose.connect('mongodb://localhost:27017/my_first_db');
-
-// const Profile = mongoose.model('profile', profileSchema);
-// const user = new Profile ({
-//   username: 'Gri', 
-//   surName: 'Egorov',
-//   firstName: 'Grisha', 
-//   password: 123
-// })
-
-// user.save().then((doc) => {
-//   console.log('object saved', doc);
-//   mongoose.disconnect();
-// }).catch((err) => {
-//   console.log(err);
-//   mongoose.disconnect();
-// })
-
-
-
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
+// const _ = require("lodash");
+
+const bodyParser = require("body-parser");
+
+require('./auth/passport');
+require('./db');
+
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+// mongoose.connect('mongodb://localhost:27017/my_first_db');
+
+// const jwt = require('jsonwebtoken');
+// const passport = require("passport");
+// const passportJWT = require("passport-jwt");
+
+// const ExtractJwt = passportJWT.ExtractJwt;
+// const JwtStrategy = passportJWT.Strategy;
 
 const app = express();
 
 app.use(express.static(path.join(process.cwd(), 'build')));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-// app.use('/', require('./routes/index'));
+//////
+
+// const jwtOptions = {}
+// jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+// jwtOptions.secretOrKey = 'tasmanianDevil';
+
+// const strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
+//   console.log('payload received', jwt_payload);
+//   // usually this would be a database call:
+
+
+//   var user = users[_.findIndex(users, {id: jwt_payload.id})];
+
+
+//   if (user) {
+//     next(null, user);
+//   } else {
+//     next(null, false);
+//   }
+// });
+
+// passport.use(strategy);
+
+///////
 
 app.use('/api', require('./routes'))
 app.use('*', (_req, res) => {
-  const file = path.resolve(__dirname, 'build', 'index.html')
-  console.log('сработал *')
+  const file = path.resolve(__dirname, '../build', 'index.html')
+  console.log('Запрос не к /api, выдаем index.html...')
   res.sendFile(file)
 })
 
