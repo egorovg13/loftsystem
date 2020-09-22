@@ -1,32 +1,59 @@
 const mongoose = require('mongoose');
-const { Profiler } = require('react');
-const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
+const db = require('../db/index');
 
-const newsSchema = new Schema ({ 
-  text: String, 
-  title: String
-})
+const getFormattedAllNews = async () => {
+  const allNews = await db.getAllNews();
+  const newsWithIds = allNews.map( (newsObj) => {
+    const newObj = newsObj._doc;
+    newObj.id = newsObj._id;
+    delete newObj._id;
 
-const News = mongoose.model('news', newsSchema);
+    return newObj;
+  });
 
-module.exports.post = (req, res) => {
-    mongoose.connect('mongodb://localhost:27017/my_first_db');
+  return newsWithIds;
+};
 
-    console.log('начало работы контролера news')
-    console.log(process.cwd())
-    console.log('---', req.url);
-    console.log(req.body);
+module.exports.get = async (req, res) => {
+  const news = await getFormattedAllNews();
+  res.json(news);
+};
 
-    let newsData = req.body;
-    let news = new News(newsData)
-
-    news.save().then((doc) => {
-      console.log('object saved', doc);
-      mongoose.disconnect();
-      res.send(doc);
-    }).catch((err) => {
-      console.log(err);
-      mongoose.disconnect();
-    })
+module.exports.post = async (req, res) => {
+  const {id} = res.locals;
+  const user = await db.getUserById(id);
+  const userData = {
+    firstName: user.firstName,
+    id: id,
+    image: user.image,
+    middleName: user.middleName,
+    surName: user.surName,
+    username: user.username,
   };
+
+  await db.createNews(req.body, userData);
+  const allNews = await getFormattedAllNews();
+  res.json(allNews);
+};
+
+module.exports.delete = async (req, res) => {
+  const newsId = req.params.newsId;
+  await db.deleteNews(newsId);
+
+  const news = await getFormattedAllNews();
+
+  res.json(news);
+};
+
+module.exports.patchNews = async (req, res) => {
+  const newsId = req.params.newsId;
+  const newTitle = req.body.title;
+  const newText = req.body.text;
+  const updateResult = await db.updateNews(newsId, newTitle, newText);
+
+  if (updateResult) {
+    const news = await getFormattedAllNews();
+    res.json(news);
+  }
+};

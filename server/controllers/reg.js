@@ -2,11 +2,11 @@
 // const Schema = mongoose.Schema;
 // mongoose.Promise = global.Promise;
 
-// const profileSchema = new Schema ({ 
-//   username: String, 
+// const profileSchema = new Schema ({
+//   username: String,
 //   surName: String,
-//   firstName: String, 
-//   middleName: String, 
+//   firstName: String,
+//   middleName: String,
 //   password: String
 // })
 
@@ -37,19 +37,19 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 module.exports.post = async (req, res) => {
-    // mongoose.connect('mongodb://localhost:27017/my_first_db');
-    const name  = req.body.username;
-    const user = await db.getUserByName(name);
-    if (user){
-        console.log('Пользователь с этим ником уже существует')
-        res.status(400);
-        return
-        // не останавливает создание пользователя..
-    }
+  // mongoose.connect('mongodb://localhost:27017/my_first_db');
+  const name = req.body.username;
+  const user = await db.getUserByName(name);
+  if (user) {
+    console.log('Пользователь с этим ником уже существует');
+    res.status(400);
+    return;
+    // не останавливает создание пользователя..
+  }
 
-    console.log('создаем нового пользователя..')
-    const newUser = await db.createUser(req.body);
-    console.log(`new user created: ${newUser}`)
-    res.send(newUser);
-    // mongoose.disconnect();
-}
+  console.log('создаем нового пользователя..');
+  const newUser = await db.createUser(req.body);
+  console.log(`new user created: ${newUser}`);
+  res.send(newUser);
+  // mongoose.disconnect();
+};

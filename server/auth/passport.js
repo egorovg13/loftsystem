@@ -35,14 +35,16 @@ passport.use(
 passport.use(
     new JWTStrategy(params, async (payload, done) => {
         try {
-            var user = await db.getUserByName(payload.id)
+            var userid = payload.user.id
+            console.log(`searching for user with ID ${userid}`);
+            var user = await db.getUserById(userid)
         } catch (error) {
             return done(error)
         }
 
         if (user) {
-            console.log(`пользователь найден с id ${user.id }`);
-            done(null, { id: user.id })
+            console.log(`пользователь найден с id ${userid}`);
+            done(null, { id: userid })
         } else {
             done(new Error('User not found'))
         }

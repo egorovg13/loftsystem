@@ -7,7 +7,7 @@ function createTokens(user, secret) {
         },
         secret,
         {
-            expiresIn: '1m'
+            expiresIn: '3m'
         }
     )
 
@@ -17,7 +17,7 @@ function createTokens(user, secret) {
         },
         secret,
         {
-            expiresIn: '3m'
+            expiresIn: '6m'
         }
     )
 
