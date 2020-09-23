@@ -3,6 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
 const http = require('http');
+const PORT = process.env.PORT || 3000;
 
 const server = http.createServer(app);
 const io = require('socket.io').listen(server);
@@ -34,9 +35,12 @@ app.use((err, req, res, next) => {
   console.log(err);
 });
 
-server.listen(3000, () => {
+server.listen(PORT, () => {
   console.log('Example app listening on port 3000!');
 });
+
+//  ////////////////// //
+
 
 const currentUsers = {};
 const messageHistory = {};
