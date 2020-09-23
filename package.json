@@ -2,7 +2,7 @@
   "name": "loftschool-nodejs-project",
   "version": "0.1.0",
   "engines": {
-  "node": "12.14.1"
+    "node": "12.14.1"
   },
   "private": true,
   "dependencies": {
@@ -40,7 +40,10 @@
     "socket.io-client": "^2.2.0"
   },
   "scripts": {
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -57,8 +60,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "eslint": "^7.9.0",
-    "eslint-config-google": "^0.14.0"
-  }
+  "devDependencies": {}
 }
