@@ -63,7 +63,14 @@ module.exports.auth = async (req, res, next) => {
 module.exports.getProfile = ( async (req, res) => {
   const {id} = res.locals;
   const userObj = await db.getUserById(id);
-  res.json(userObj);
+
+  const userWithId = userObj._doc;
+  userWithId.id = id;
+  delete userWithId.hash;
+  delete userWithId._id;
+
+  console.log(userWithId);
+  res.json(userWithId);
 });
 
 module.exports.updateProfile = ( async (req, res) => {
