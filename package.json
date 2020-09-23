@@ -40,7 +40,7 @@
     "socket.io-client": "^2.2.0"
   },
   "scripts": {
-    "start": "node server/server.js",
+    "start": "node server/server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
