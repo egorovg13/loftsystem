@@ -11,10 +11,6 @@ const io = require('socket.io').listen(server);
 require('./auth/passport');
 require('./db');
 
-const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/my_first_db');
-
 app.use(express.static(path.join(process.cwd(), 'build')));
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));

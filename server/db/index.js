@@ -1,6 +1,32 @@
 const User = require('./models/user');
 const News = require('./models/news');
 
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+
+// mongoose.connect('mongodb://localhost:27017/my_first_db');
+
+const uri = 'mongodb+srv://loftsystem_server_admin:loftschool@firstcluster.msfeq.mongodb.net/loftsystem?retryWrites=true&w=majority';
+
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+});
+
+mongoose.connection.on('connected', () => {
+  console.log(`Mongoose connection open`);
+});
+
+mongoose.connection.on('error', (err) => {
+  console.log('Mongoose connection error: ' + err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('Mongoose disconnected');
+});
+
 module.exports.getUserById = async (id) => {
   const result = await User.findOne({_id: id});
   return result;
@@ -32,7 +58,6 @@ module.exports.createUser = async (data) => {
   console.log(`пользователь сохранен`);
   return user;
 };
-
 
 module.exports.updateUser = async (id, data) => {
   await User.findOneAndUpdate(

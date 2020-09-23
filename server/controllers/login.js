@@ -1,7 +1,5 @@
 const passport = require('passport');
 const token = require('../auth/token');
-const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
 const db = require('../db/index');
 const formidable = require('formidable');
 const fs = require('fs');
@@ -32,7 +30,6 @@ module.exports.post = async (req, res) => {
         }});
     }
   })(req, res);
-  // mongoose.disconnect()
 };
 
 module.exports.refresh = async (req, res) => {
